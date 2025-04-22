@@ -16,15 +16,37 @@ function App() {
     setPosts([...data.posts]);
   };
 
-  const agregarPost = async () => {
-    const post = { titulo, url: imgSrc, descripcion };
-    await axios.post(urlBaseServer + "/posts", post);
-    getPosts();
-
+  const limpiaVariables = ()=>{
     //DZ: Se agrega esto paera que limpiara el formulario al agregar un dato
     setTitulo('');
     setImgSRC('');
     setDescripcion('');
+  }
+
+  const agregarPost = async () => {
+    const post = { titulo, url: imgSrc, descripcion };
+
+    if(imgSrc.length >100){
+      setImgSRC('');
+      return alert('URL tiene más de 100 caracteres, favor buscar otra URL');
+    }
+
+    if(titulo.length == 0){
+      return alert('Titulo no puede estar vacio, favor registrar un nombre');
+    }
+
+    if(imgSrc.length == 0){
+      return alert('URL no puede estar vacia, favor registrar una URL con menos de 100 caractreres');
+    }
+
+    if(descripcion.length == 0){
+      return alert('Descripción no puede estar vacia, favor registrar un descripcion');
+    }
+
+    await axios.post(urlBaseServer + "/posts", post);
+    limpiaVariables();
+    getPosts();
+
   };
 
   // este método se utilizará en el siguiente desafío
